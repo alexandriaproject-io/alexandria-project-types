@@ -63,4 +63,4 @@ jobs:
           git commit -m "Automated build commit"
           git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
           git pull
-          git push origin HEAD:main --tags
+          git push origin HEAD:dev --tags
