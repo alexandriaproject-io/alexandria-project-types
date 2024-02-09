@@ -70,6 +70,8 @@ jobs:
       # Copy the generated directories to thrift-output
       - name: Copy generated directories
         run: |
+          mkdir -p ./thrift-output
+          cd ./llm-inference-thrift
           ls
           # mkdir -p ../thrift-output
           # cp -r com ../thrift-output/
