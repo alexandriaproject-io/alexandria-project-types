@@ -61,6 +61,5 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add -f build/
           git commit -m "Automated build commit"
-          git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
-          git pull
-          git push --tags
+          git pull origin dev # Ensure you're up-to-date with the dev branch
+          git push origin HEAD:dev # Push to the dev branch
