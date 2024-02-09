@@ -67,9 +67,10 @@ jobs:
           cd llm-inference-thrift
           mkdir -p html
           chmod +x thrift_build.sh
-          ls
           bash -c "./thrift_build.sh"
-          ls
+          ls ./com
+          echo "test--------------------"
+          ls ./html
       # # Copy the generated directories to thrift-output
       # - name: Copy generated directories
       #   run: |
