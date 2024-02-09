@@ -5,7 +5,8 @@ on:
     branches:
       - dev-github-build-action
     paths:
-      - ".github/*"
+      - "test/**"
+
 # jobs:
 #   sync:
 #     runs-on: self-hosted
