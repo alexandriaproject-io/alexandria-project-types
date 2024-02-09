@@ -3,33 +3,9 @@ name: Sync thrift changes to types repository
 on:
   push:
     branches:
-      - dev-github-build-action
+      - dev
     paths:
       - "test/**"
-
-# jobs:
-#   sync:
-#     runs-on: self-hosted
-#     steps:
-#       - name: Checkout source repository
-#         uses: actions/checkout@v3
-#         with:
-#           ref: dev
-
-#       - name: Setup git config
-#         run: |
-#           git config --global user.name "LLM Inference GitHub Actions"
-#           git config --global user.email "llm-inference-actions@github.com"
-
-#       - name: Sync to target repository
-#         uses: ad-m/github-push-action@v0.8.0
-#         with:
-#           github_token: ${{ secrets.TYPES_REPO_TOKEN }}
-#           # repository: alexandriaproject-io/alexandria-project-types
-#           repository: SergeSyntax/test-github-ci-cd-sync
-#           branch: dev
-#           force: true
-#           directory: thrift
 jobs:
   build-and-push:
     runs-on: self-hosted
@@ -88,8 +64,11 @@ jobs:
 
           git add thrift-output/
           git commit -m "Include llm-inference thrift folder and build scripts" || echo "No changes to commit"
-          git push
+    
+          git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
           
+          git push origin HEAD:dev --tags
+
       # - name: Commit and Push Build
       #   run: |
       #     git config --global user.name 'github-actions[bot]'
