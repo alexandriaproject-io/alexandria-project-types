@@ -55,11 +55,23 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      # - name: Commit and Push Build
+      #   run: |
+      #     git config --global user.name 'github-actions[bot]'
+      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #     git add -f build/
+      #     git commit -m "Automated build commit"
+      #     git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
+      #     git pull
+      #     git push --tags
+
+
       - name: Commit and Push Build
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add -f build/
           git commit -m "Automated build commit"
-          git pull origin dev # Ensure you're up-to-date with the dev branch
+          git fetch origin dev # Fetch the latest commits from the dev branch
+          git rebase origin/dev # Rebase your changes on top of the dev branch
           git push origin HEAD:dev # Push to the dev branch
