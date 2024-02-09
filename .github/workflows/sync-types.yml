@@ -55,6 +55,11 @@ jobs:
           # Remove the cloned repository to clean up
           rm -rf llm-inference
 
+      - name: Install Thrift Compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y thrift-compiler
+
       # Assuming thrift_build.sh is inside llm-inference-thrift and it generates com and html directories
       - name: Setup and run thrift build script
         run: |
