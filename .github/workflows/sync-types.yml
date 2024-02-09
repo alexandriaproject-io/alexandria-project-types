@@ -68,15 +68,16 @@ jobs:
           mkdir -p html
           chmod +x thrift_build.sh
           bash -c "./thrift_build.sh"
+
+      # Copy the generated directories to thrift-output
+      - name: Copy generated directories
+        run: |
+          pwd
+          mkdir -p ../thrift-output
+          echo "test----------------"
           ls ./com
-          echo "test--------------------"
-          ls ./html
-      # # Copy the generated directories to thrift-output
-      # - name: Copy generated directories
-      #   run: |
-      #     mkdir -p ../thrift-output
-      #     cp -r com ../thrift-output/
-      #     cp -r html ../thrift-output/
+          # cp -r com ../thrift-output/
+          # cp -r html ../thrift-output/
 
       # # Remove the llm-inference-thrift directory
       # - name: Remove llm-inference-thrift directory
