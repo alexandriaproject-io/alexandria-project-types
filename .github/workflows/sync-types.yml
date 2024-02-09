@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - dev-github-build-action
-    # paths:
-    #   - "thrift/**"
-    #   - "thrift_build.ps1"
-    #   - "thrift_build.sh"
+    paths:
+      - "./.github/workflows/sync-types.yml"
 # jobs:
 #   sync:
 #     runs-on: self-hosted
