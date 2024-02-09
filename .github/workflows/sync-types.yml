@@ -61,14 +61,15 @@ jobs:
       #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
       #     git add -f build/
       #     git commit -m "Automated build commit"
-      #     git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
-      #     git pull
-      #     git push --tags
+
       - name: Commit and Push Build
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add -f build/
           git commit -m "Automated build commit" || echo "No changes to commit"
+          git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
+          git pull
+          git push --tags
           git fetch origin dev
           git push --force-with-lease origin HEAD:dev
