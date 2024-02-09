@@ -63,37 +63,37 @@ jobs:
       # Assuming thrift_build.sh is inside llm-inference-thrift and it generates com and html directories
       - name: Setup and run thrift build script
         run: |
-          ls
           cd llm-inference-thrift
           mkdir -p html
           chmod +x thrift_build.sh
           bash -c "./thrift_build.sh"
-
       # Copy the generated directories to thrift-output
       - name: Copy generated directories
         run: |
+          ls ~
           pwd
-          mkdir -p ../thrift-output
-          echo "test----------------"
-          ls ./com
-          # cp -r com ../thrift-output/
-          # cp -r html ../thrift-output/
+          echo "test......"
+          cd llm-inference-thrift
+          mkdir -p thrift-output
+          cp -r ./llm-inference-thrift/com ./thrift-output/
+          cp -r ./llm-inference-thrift/html ./thrift-output/
+          rm -rf llm-inference-thrift
 
-      # # Remove the llm-inference-thrift directory
-      # - name: Remove llm-inference-thrift directory
-      #   run: cd .. && rm -rf llm-inference-thrift
+      # Remove the llm-inference-thrift directory
+      - name: Remove llm-inference-thrift directory
+        run: cd .. && rm -rf llm-inference-thrift
 
 
-      # # Optional: Commit and push the changes to the current repository
-      # - name: Commit and push changes
-      #   run: |
-      #     git config --global user.name 'github-actions[bot]'
-      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      #     git config --global pull.rebase true
+      # Optional: Commit and push the changes to the current repository
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global pull.rebase true
 
-      #     git add thrift-output/
-      #     git commit -m "Include llm-inference thrift folder and build scripts" || echo "No changes to commit"
-      #     git push
+          git add thrift-output/
+          git commit -m "Include llm-inference thrift folder and build scripts" || echo "No changes to commit"
+          git push
           
       # - name: Commit and Push Build
       #   run: |
