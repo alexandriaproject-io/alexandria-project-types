@@ -64,10 +64,9 @@ jobs:
       - name: Setup and run thrift build script
         run: |
           cd llm-inference-thrift
-          chmod +x thrift_build.sh
           mkdir -p html
-          ./thrift_build.sh
-
+          chmod +x thrift_build.sh
+          bash -c "./thrift_build.sh"
       # Copy the generated directories to thrift-output
       - name: Copy generated directories
         run: |
