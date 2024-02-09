@@ -71,26 +71,24 @@ jobs:
       - name: Copy generated directories
         run: |
           mkdir -p ./thrift-output
-          # cd ./llm-inference-thrift
-          ls
           cp -r ./llm-inference-thrift/com ./thrift-output/
           cp -r ./llm-inference-thrift/html ./thrift-output/
 
-      # # Remove the llm-inference-thrift directory
-      # - name: Remove llm-inference-thrift directory
-      #   run: cd .. && rm -rf llm-inference-thrift
+      # Remove the llm-inference-thrift directory
+      - name: Remove llm-inference-thrift directory
+        run: rm -rf llm-inference-thrift
 
 
-      # # Optional: Commit and push the changes to the current repository
-      # - name: Commit and push changes
-      #   run: |
-      #     git config --global user.name 'github-actions[bot]'
-      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      #     git config --global pull.rebase true
+      # Optional: Commit and push the changes to the current repository
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global pull.rebase true
 
-      #     git add thrift-output/
-      #     git commit -m "Include llm-inference thrift folder and build scripts" || echo "No changes to commit"
-      #     git push
+          git add thrift-output/
+          git commit -m "Include llm-inference thrift folder and build scripts" || echo "No changes to commit"
+          git push
           
       # - name: Commit and Push Build
       #   run: |
