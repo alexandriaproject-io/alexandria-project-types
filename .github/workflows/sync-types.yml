@@ -14,14 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-
           ssh-key: ${{ secrets.TYPES_REPO_TOKEN }}
 
       - name: Clone, copy thrift folder, and include specific files
         env:
           REPO_NAME: llm-inference
         run: |
-          git clone https://github.com/alexandriaproject-io/$REPO_NAME.git:dev
+          git clone -b dev https://github.com/alexandriaproject-io/$REPO_NAME.git
           mkdir -p $REPO_NAME-thrift
           cp -r $REPO_NAME/thrift $REPO_NAME-thrift/thrift
           cp $REPO_NAME/thrift_build.sh $REPO_NAME-thrift/thrift_build.sh
