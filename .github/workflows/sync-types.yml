@@ -1,4 +1,4 @@
-name: Sync thrift changes to types repository
+name: Event Sync thrift dev
 
 #on:
 #  push:
