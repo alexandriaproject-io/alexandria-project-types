@@ -1,12 +1,5 @@
 name: Event Sync thrift dev
 
-#on:
-#  push:
-#    branches:
-#      - dev
-#    tags-ignore:
-#      - "*"
-
 on:
   repository_dispatch:
     types: [sync_types_dev]
