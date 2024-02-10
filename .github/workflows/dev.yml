@@ -55,7 +55,12 @@ jobs:
           git config --global pull.rebase true
 
           git add .
-          git commit -m "skip ci"
-          
-          git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
-          git push origin HEAD:dev --tags
+          # Check if there are changes to commit
+          if git diff-index --quiet HEAD --; then
+            echo "No changes to commit"
+            exit 0
+          else
+            git commit -m "skip ci"
+            git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
+            git push origin HEAD:main --tags
+          fi
