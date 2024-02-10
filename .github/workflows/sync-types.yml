@@ -10,7 +10,7 @@ on:
 jobs:
   build-and-push:
     runs-on: self-hosted
-    if: github.actor != 'github-actions[bot]'
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -43,12 +43,12 @@ jobs:
         run: |
           cd $REPO_NAME-thrift
           chmod +x thrift_build.sh
-          bash -c "./thrift_build.sh --py ./build/$REPO_NAME/python"
-          bash -c "./thrift_build.sh --html ./build/$REPO_NAME/html"
-          bash -c "./thrift_build.sh --golang ./build/$REPO_NAME/golang"
+          bash -c "./thrift_build.sh --py ./types/$REPO_NAME/python"
+          bash -c "./thrift_build.sh --html ./types/$REPO_NAME/html"
+          bash -c "./thrift_build.sh --golang ./types/$REPO_NAME/golang"
           cd ..
           
-          cp -r ./$REPO_NAME-thrift/build/* ./
+          cp -r ./$REPO_NAME-thrift/types ./
           rm -rf $REPO_NAME-thrift
 
       - name: Commit and push changes
@@ -58,7 +58,7 @@ jobs:
           git config --global pull.rebase true
 
           git add .
-          git commit -m "Updated thrift interfaces"
+          git commit -m "skip ci"
           
           git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
           git push origin HEAD:dev --tags
