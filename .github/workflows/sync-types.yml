@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - dev
-    paths:
-      - "test/**"
+    tags-ignore:
+      - "*"
 jobs:
   build-and-push:
     runs-on: self-hosted
@@ -18,16 +18,16 @@ jobs:
         env:
           REPO_NAME: llm-inference
         run: |
-          git clone https://github.com/alexandriaproject-io/${{ REPO_NAME }}.git
-          cd ${{ REPO_NAME }}
+          git clone https://github.com/alexandriaproject-io/$REPO_NAME.git
+          cd $REPO_NAME
           git checkout dev
           cd ..
           
-          mkdir -p ${{ REPO_NAME }}-thrift
-          cp -r ${{ REPO_NAME }}/thrift ${{ REPO_NAME }}-thrift/thrift
-          cp ${{ REPO_NAME }}/thrift_build.sh ${{ REPO_NAME }}-thrift/thrift_build.sh
+          mkdir -p $REPO_NAME-thrift
+          cp -r $REPO_NAME/thrift $REPO_NAME-thrift/thrift
+          cp $REPO_NAME/thrift_build.sh $REPO_NAME-thrift/thrift_build.sh
 
-          rm -rf ${{ REPO_NAME }}
+          rm -rf $REPO_NAME
 
       - name: Install Thrift Compiler
         run: |
@@ -38,15 +38,15 @@ jobs:
         env:
           REPO_NAME: llm-inference
         run: |
-          cd ${{ REPO_NAME }}-thrift
+          cd $REPO_NAME-thrift
           chmod +x thrift_build.sh
-          bash -c "./thrift_build.sh --py ./build/${{ REPO_NAME }}/python"
-          bash -c "./thrift_build.sh --html ./build/${{ REPO_NAME }}/html"
-          bash -c "./thrift_build.sh --golang ./build/${{ REPO_NAME }}/golang"
-          bash -c "./thrift_build.sh --ts ./build/${{ REPO_NAME }}/ts"
+          bash -c "./thrift_build.sh --py ./build/$REPO_NAME/python"
+          bash -c "./thrift_build.sh --html ./build/$REPO_NAME/html"
+          bash -c "./thrift_build.sh --golang ./build/$REPO_NAME/golang"
+          bash -c "./thrift_build.sh --ts ./build/$REPO_NAME/ts"
 
-          cp -r ./${{ REPO_NAME }}-thrift/build ./
-          rm -rf ${{ REPO_NAME }}-thrift
+          cp -r ./$REPO_NAME-thrift/build ./
+          rm -rf $REPO_NAME-thrift
 
       - name: Commit and push changes
         run: |
