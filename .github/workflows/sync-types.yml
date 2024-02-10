@@ -43,7 +43,6 @@ jobs:
           bash -c "./thrift_build.sh --py ./build/$REPO_NAME/python"
           bash -c "./thrift_build.sh --html ./build/$REPO_NAME/html"
           bash -c "./thrift_build.sh --golang ./build/$REPO_NAME/golang"
-          bash -c "./thrift_build.sh --ts ./build/$REPO_NAME/ts"
 
           cp -r ./$REPO_NAME-thrift/build ./
           rm -rf $REPO_NAME-thrift
