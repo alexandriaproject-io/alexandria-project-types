@@ -46,6 +46,8 @@ jobs:
             cd ..
             
             cp -r ./$REPO_NAME-thrift/types ./
+            cp -r ./$REPO_NAME-thrift/thrift ./
+          
             rm -rf $REPO_NAME-thrift
           done
 
