@@ -1,11 +1,15 @@
 name: Sync thrift changes to types repository
 
+#on:
+#  push:
+#    branches:
+#      - dev
+#    tags-ignore:
+#      - "*"
+
 on:
-  push:
-    branches:
-      - dev
-    tags-ignore:
-      - "*"
+  repository_dispatch:
+    types: "sync-types-dev"
 
 jobs:
   build-and-push:
