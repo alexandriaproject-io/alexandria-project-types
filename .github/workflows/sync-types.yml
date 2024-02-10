@@ -13,70 +13,49 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ssh-key: ${{ secrets.TYPES_REPO_TOKEN }}
-  
-      # Step to clone the specific repo, copy the thrift folder and specific files
+
       - name: Clone, copy thrift folder, and include specific files
+        env:
+          REPO_NAME: llm-inference
         run: |
-          # Clone the external repository
-          git clone https://github.com/alexandriaproject-io/llm-inference.git
+          git clone https://github.com/alexandriaproject-io/${{ REPO_NAME }}.git
+          cd ${{ REPO_NAME }}
+          git checkout dev
+          cd ..
+          
+          mkdir -p ${{ REPO_NAME }}-thrift
+          cp -r ${{ REPO_NAME }}/thrift ${{ REPO_NAME }}-thrift/thrift
+          cp ${{ REPO_NAME }}/thrift_build.sh ${{ REPO_NAME }}-thrift/thrift_build.sh
 
-          # Create the destination folder
-          mkdir -p llm-inference-thrift
-
-          # Copy the thrift directory and specific files into the llm-inference-thrift folder
-          cp -r llm-inference/thrift llm-inference-thrift/thrift
-          cp llm-inference/thrift_build.ps1 llm-inference-thrift/thrift_build.ps1
-          cp llm-inference/thrift_build.sh llm-inference-thrift/thrift_build.sh
-
-          # Remove the cloned repository to clean up
-          rm -rf llm-inference
+          rm -rf ${{ REPO_NAME }}
 
       - name: Install Thrift Compiler
         run: |
           sudo apt-get update
           sudo apt-get install -y thrift-compiler
 
-      # Assuming thrift_build.sh is inside llm-inference-thrift and it generates com and html directories
       - name: Setup and run thrift build script
+        env:
+          REPO_NAME: llm-inference
         run: |
-          cd llm-inference-thrift
+          cd ${{ REPO_NAME }}-thrift
           chmod +x thrift_build.sh
-          mkdir -p html
-          bash -c "./thrift_build.sh"
-      # Copy the generated directories to thrift-output
-      - name: Copy generated directories
-        run: |
-          mkdir -p ./thrift-output
-          cp -r ./llm-inference-thrift/com ./thrift-output/
-          cp -r ./llm-inference-thrift/html ./thrift-output/
+          bash -c "./thrift_build.sh --py ./build/${{ REPO_NAME }}/python"
+          bash -c "./thrift_build.sh --html ./build/${{ REPO_NAME }}/html"
+          bash -c "./thrift_build.sh --golang ./build/${{ REPO_NAME }}/golang"
+          bash -c "./thrift_build.sh --ts ./build/${{ REPO_NAME }}/ts"
 
-      # Remove the llm-inference-thrift directory
-      - name: Remove llm-inference-thrift directory
-        run: rm -rf llm-inference-thrift
+          cp -r ./${{ REPO_NAME }}-thrift/build ./
+          rm -rf ${{ REPO_NAME }}-thrift
 
-
-      # Optional: Commit and push the changes to the current repository
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git config --global pull.rebase true
 
-          git add thrift-output/
-          git commit -m "Include llm-inference thrift folder and build scripts" || echo "No changes to commit"
-    
-          git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
+          git add .
+          git commit -m "Updated thrift interfaces"
           
+          git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
           git push origin HEAD:dev --tags
-
-      # - name: Commit and Push Build
-      #   run: |
-      #     git config --global user.name 'github-actions[bot]'
-      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      #     git add -f build/
-      #     git commit -m "Automated build commit" || echo "No changes to commit"
-      #     git tag -a "v$(date +'%Y%m%d%H%M%S')" -m "Automated build tag"
-      #     git pull
-      #     git push --tags
-      #     git fetch origin dev
-      #     git push --force-with-lease origin HEAD:dev
