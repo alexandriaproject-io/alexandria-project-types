@@ -6,12 +6,15 @@ on:
       - dev
     tags-ignore:
       - "*"
+
 jobs:
   build-and-push:
     runs-on: self-hosted
+    if: github.actor != 'github-actions[bot]'
     steps:
       - uses: actions/checkout@v3
         with:
+
           ssh-key: ${{ secrets.TYPES_REPO_TOKEN }}
 
       - name: Clone, copy thrift folder, and include specific files
@@ -45,7 +48,7 @@ jobs:
           bash -c "./thrift_build.sh --golang ./build/$REPO_NAME/golang"
           cd ..
           
-          cp -r ./$REPO_NAME-thrift/build ./
+          cp -r ./$REPO_NAME-thrift/build/* ./
           rm -rf $REPO_NAME-thrift
 
       - name: Commit and push changes
