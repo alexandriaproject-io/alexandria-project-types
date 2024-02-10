@@ -45,8 +45,8 @@ jobs:
             bash -c "./thrift_build.sh --ts ./types/$REPO_NAME/typescript"
             cd ..
             
+            cp -r ./$REPO_NAME-thrift/thrift ./$REPO_NAME/
             cp -r ./$REPO_NAME-thrift/types ./
-            cp -r ./$REPO_NAME-thrift/thrift ./
           
             rm -rf $REPO_NAME-thrift
           done
