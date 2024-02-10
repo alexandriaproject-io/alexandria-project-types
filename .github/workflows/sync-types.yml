@@ -9,7 +9,7 @@ name: Sync thrift changes to types repository
 
 on:
   repository_dispatch:
-    types: "sync-types-dev"
+    types: ["sync-types-dev"]
 
 jobs:
   build-and-push:
